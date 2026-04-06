@@ -31,4 +31,4 @@ services:
       - key: GEMINI_API_KEY
         sync: false
       - key: CLIENT_URL
-        value: https://municipal-board-system.onrender.com # Update this after first deployment
+        value: https://municipal-board-system-zta4.onrender.com
