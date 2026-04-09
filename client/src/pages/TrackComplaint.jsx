@@ -155,6 +155,23 @@ export default function TrackComplaint() {
                 </div>
               )}
 
+              {/* Resolution Details */}
+              {(complaint.resolutionImageUrl || complaint.resolutionRemarks) && (
+                <div className="card p-6 border-green-200 border-2 bg-green-50">
+                  <h3 className="text-sm font-semibold text-green-900 mb-3">Resolution Details</h3>
+                  {complaint.resolutionRemarks && (
+                    <p className="text-sm text-green-800 leading-relaxed mb-4">
+                      {complaint.resolutionRemarks}
+                    </p>
+                  )}
+                  {complaint.resolutionImageUrl && (
+                    <button onClick={() => setLightbox(complaint.resolutionImageUrl)} className="h-40 rounded-xl overflow-hidden border border-green-200 hover:opacity-90 transition-opacity">
+                      <img src={complaint.resolutionImageUrl} alt="Resolution" className="h-full object-cover" />
+                    </button>
+                  )}
+                </div>
+              )}
+
               {/* Map */}
               <div className="card p-6">
                 <h3 className="text-sm font-semibold text-gray-900 mb-3">Reported location</h3>

@@ -35,6 +35,8 @@ export default function ComplaintDetail() {
   const [adminNote, setAdminNote]     = useState('');
   const [publicNote, setPublicNote]   = useState('');
   const [department, setDepartment]   = useState('');
+  const [resolutionRemarks, setResolutionRemarks] = useState('');
+  const [resolutionImage, setResolutionImage] = useState(null);
   const [updating, setUpdating]       = useState(false);
   const [assigning, setAssigning]     = useState(false);
 
@@ -47,6 +49,7 @@ export default function ComplaintDetail() {
       setComplaint(data); setNewStatus(data.status);
       setAdminNote(data.adminNote || ''); setPublicNote(data.publicNote || '');
       setDepartment(data.department || '');
+      setResolutionRemarks(data.resolutionRemarks || '');
     } catch (err) {
       if (err.response?.status === 404) { toast.error('Complaint not found'); navigate('/admin/complaints'); }
       else toast.error('Failed to load complaint');
@@ -59,11 +62,28 @@ export default function ComplaintDetail() {
 
   const handleUpdate = async () => {
     if (!newStatus) { toast.error('Please select a status'); return; }
+    if (newStatus === 'resolved' && !resolutionImage && !resolutionRemarks) {
+      toast.error('Please provide a resolution photo or description');
+      return; 
+    }
     setUpdating(true);
     try {
-      const result = await updateComplaintStatus(id, { newStatus, adminNote: adminNote.trim(), publicNote: publicNote.trim() });
+      let payload;
+      if (newStatus === 'resolved' && (resolutionImage || resolutionRemarks || complaint.resolutionImageUrl)) {
+        // use FormData for multipart request
+        payload = new FormData();
+        payload.append('newStatus', newStatus);
+        payload.append('adminNote', adminNote.trim());
+        payload.append('publicNote', publicNote.trim());
+        if (resolutionRemarks) payload.append('resolutionRemarks', resolutionRemarks.trim());
+        if (resolutionImage) payload.append('resolutionImage', resolutionImage);
+      } else {
+        payload = { newStatus, adminNote: adminNote.trim(), publicNote: publicNote.trim() };
+      }
+
+      const result = await updateComplaintStatus(id, payload);
       toast.success(`Status updated to "${newStatus.replace('_',' ')}"`);
-      setComplaint((p) => ({ ...p, status: result.complaint.status, adminNote: result.complaint.adminNote, publicNote: result.complaint.publicNote, statusLogs: result.complaint.statusLogs }));
+      setComplaint((p) => ({ ...p, status: result.complaint.status, adminNote: result.complaint.adminNote, publicNote: result.complaint.publicNote, statusLogs: result.complaint.statusLogs, resolutionImageUrl: result.complaint.resolutionImageUrl, resolutionRemarks: result.complaint.resolutionRemarks }));
     } catch (err) { toast.error(err.response?.data?.error || 'Failed to update status'); }
     finally { setUpdating(false); }
   };
@@ -145,6 +165,19 @@ export default function ComplaintDetail() {
                 </div>
               )}
 
+              {/* Resolution Information */}
+              {(complaint.resolutionImageUrl || complaint.resolutionRemarks) && (
+                <div className="card p-6 border-green-200 border-2 bg-green-50">
+                  <h3 className="section-title mb-3 text-green-800">Resolution details</h3>
+                  {complaint.resolutionRemarks && <p className="text-sm text-green-900 leading-relaxed mb-4">{complaint.resolutionRemarks}</p>}
+                  {complaint.resolutionImageUrl && (
+                    <button onClick={() => setLightbox(complaint.resolutionImageUrl)} className="h-40 rounded-xl overflow-hidden border border-green-200 hover:opacity-90 transition-opacity">
+                      <img src={complaint.resolutionImageUrl} alt="Resolution Photo" className="h-full object-cover" />
+                    </button>
+                  )}
+                </div>
+              )}
+
               {/* Map */}
               <div className="card p-6">
                 <h3 className="section-title mb-4">Exact location</h3>
@@ -200,6 +233,22 @@ export default function ComplaintDetail() {
                   <label className="label">Public note <span className="text-xs text-gray-400 font-normal">(visible to citizen)</span></label>
                   <textarea value={publicNote} onChange={(e) => setPublicNote(e.target.value)} placeholder="Message shown to citizen on tracking page..." rows={3} className="input resize-none text-sm" />
                 </div>
+                {newStatus === 'resolved' && (
+                  <div className="p-3 bg-gray-50 rounded border border-gray-200 space-y-3">
+                    <p className="text-xs font-semibold text-gray-700">Resolution Proof</p>
+                    <div>
+                      <label className="label">Resolution Summary</label>
+                      <textarea value={resolutionRemarks} onChange={(e) => setResolutionRemarks(e.target.value)} placeholder="Describe what was done to resolve..." rows={2} className="input resize-none text-sm" />
+                    </div>
+                    <div>
+                      <label className="label cursor-pointer text-sm text-primary-600 underline">
+                        Upload Resolution Photo
+                        <input type="file" accept="image/*" onChange={(e) => setResolutionImage(e.target.files[0])} className="hidden" />
+                      </label>
+                      {resolutionImage && <p className="text-xs text-green-600 mt-1">{resolutionImage.name}</p>}
+                    </div>
+                  </div>
+                )}
                 <button onClick={handleUpdate} disabled={updating || newStatus === complaint.status} className="btn-primary w-full py-2.5">
                   {updating ? <><div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />Updating...</> : '✓ Update status'}
                 </button>

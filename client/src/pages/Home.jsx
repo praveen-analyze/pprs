@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 
 export default function Home() {
   const navigate = useNavigate();
-  const [trackNo, setTrackNo]     = useState('');
+  const [trackNo, setTrackNo] = useState('');
   const [trackError, setTrackError] = useState('');
 
   const handleTrack = (e) => {
@@ -141,12 +141,12 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
             {[
-              { label: 'Road',        emoji: '🛣️', desc: 'Potholes, cracks'   },
-              { label: 'Garbage',     emoji: '🗑️', desc: 'Uncollected waste'  },
-              { label: 'Streetlight', emoji: '💡', desc: 'Broken lights'      },
-              { label: 'Drainage',    emoji: '🌊', desc: 'Blocked drains'     },
-              { label: 'Water',       emoji: '💧', desc: 'Supply issues'      },
-              { label: 'Other',       emoji: '📋', desc: 'Any civic issue'    },
+              { label: 'Road', emoji: '🛣️', desc: 'Potholes, cracks' },
+              { label: 'Garbage', emoji: '🗑️', desc: 'Uncollected waste' },
+              { label: 'Streetlight', emoji: '💡', desc: 'Broken lights' },
+              { label: 'Drainage', emoji: '🌊', desc: 'Blocked drains' },
+              { label: 'Water', emoji: '💧', desc: 'Supply issues' },
+              { label: 'Other', emoji: '📋', desc: 'Any civic issue' },
             ].map((cat) => (
               <Link key={cat.label} to="/report" className="card p-5 text-center hover:shadow-panel hover:border-primary-200 transition-all group cursor-pointer">
                 <div className="text-3xl mb-3">{cat.emoji}</div>
@@ -163,39 +163,33 @@ export default function Home() {
         <div className="page-container text-center">
           <h2 className="text-3xl font-bold mb-4">Spotted a problem? Report it now.</h2>
           <p className="text-blue-100 mb-8 max-w-lg mx-auto">Your report goes directly to the municipal authority. No registration required.</p>
-          <Link to="/report" className="inline-flex items-center gap-2 bg-white text-primary-600 font-bold px-8 py-4 rounded-xl hover:bg-blue-50 active:scale-95 transition-all text-lg">
-            Get started — it's free
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </Link>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-gray-400 py-10">
-        <div className="page-container">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
-                <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                </svg>
-              </div>
-              <div>
-                <p className="text-white text-sm font-semibold">Municipal Board</p>
-                <p className="text-xs text-gray-500">Public Problem Reporting System</p>
-              </div>
-            </div>
-            <div className="flex gap-6 text-sm">
-              <Link to="/report" className="hover:text-white transition-colors">Report</Link>
-              <Link to="/track"  className="hover:text-white transition-colors">Track</Link>
-              <Link to="/admin/login" className="hover:text-white transition-colors">Admin</Link>
-            </div>
-            <p className="text-xs text-gray-600">© {new Date().getFullYear()} Municipal Board. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
     </div>
+      </section >
+
+    {/* Footer */ }
+    < footer className = "bg-gray-900 text-gray-400 py-10" >
+      <div className="page-container">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
+              <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+            </div>
+            <div>
+              <p className="text-white text-sm font-semibold">Municipal Board</p>
+              <p className="text-xs text-gray-500">Public Problem Reporting System</p>
+            </div>
+          </div>
+          <div className="flex gap-6 text-sm">
+            <Link to="/report" className="hover:text-white transition-colors">Report</Link>
+            <Link to="/track" className="hover:text-white transition-colors">Track</Link>
+            <Link to="/admin/login" className="hover:text-white transition-colors">Admin</Link>
+          </div>
+          <p className="text-xs text-gray-600">© {new Date().getFullYear()} Municipal Board. All rights reserved.</p>
+        </div>
+      </div>
+      </footer >
+    </div >
   );
 }

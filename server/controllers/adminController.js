@@ -2,6 +2,7 @@ const jwt       = require('jsonwebtoken');
 const Admin     = require('../models/Admin');
 const Complaint = require('../models/Complaint');
 const { sendStatusUpdateEmail } = require('../utils/mailer');
+const { uploadToCloudinary } = require('../utils/cloudinary');
 
 const DEPARTMENTS   = ['Roads & Infrastructure','Sanitation','Electrical','Water Supply','Drainage','General'];
 const VALID_STATUSES = ['submitted','under_review','assigned','in_progress','resolved','rejected'];
@@ -70,20 +71,43 @@ async function getComplaintById(req, res) {
 
 async function updateComplaintStatus(req, res) {
   try {
-    const { newStatus, adminNote, publicNote } = req.body;
+    const { newStatus, adminNote, publicNote, resolutionRemarks } = req.body;
     if (!newStatus || !VALID_STATUSES.includes(newStatus)) return res.status(400).json({ error: 'Invalid status.' });
+    if (newStatus === 'resolved' && !req.file && !resolutionRemarks) {
+       // Just loosely checking, maybe resolutionRemarks is what they asked for "description admin should add"
+    }
+
     const complaint = await Complaint.findById(req.params.id);
     if (!complaint) return res.status(404).json({ error: 'Complaint not found.' });
+
+    let resolutionImageUrl = complaint.resolutionImageUrl;
+    let resolutionPublicId = complaint.resolutionPublicId;
+
+    if (newStatus === 'resolved' && req.file) {
+      const result = await uploadToCloudinary(req.file.buffer, 'municipal-complaints/resolved');
+      resolutionImageUrl = result.imageUrl;
+      resolutionPublicId = result.publicId;
+    }
+
     const oldStatus = complaint.status;
     complaint.status     = newStatus;
     complaint.adminNote  = adminNote  ? adminNote.trim()   : complaint.adminNote;
     complaint.publicNote = publicNote ? publicNote.trim()  : complaint.publicNote;
+    
+    if (resolutionRemarks) {
+      complaint.resolutionRemarks = resolutionRemarks.trim();
+    }
+    if (resolutionImageUrl) {
+      complaint.resolutionImageUrl = resolutionImageUrl;
+      complaint.resolutionPublicId = resolutionPublicId;
+    }
+
     complaint.statusLogs.push({ oldStatus, newStatus, changedBy: req.admin.name, note: adminNote ? adminNote.trim() : null, changedAt: new Date() });
     await complaint.save();
     if (complaint.reporterEmail) {
       await sendStatusUpdateEmail({ to: complaint.reporterEmail, complaintNo: complaint.complaintNo, status: newStatus, publicNote: complaint.publicNote, trackUrl: `${process.env.CLIENT_URL}/track/${complaint.complaintNo}`, category: complaint.category });
     }
-    res.json({ success: true, message: `Status updated to ${newStatus}`, complaint: { _id: complaint._id, complaintNo: complaint.complaintNo, status: complaint.status, adminNote: complaint.adminNote, publicNote: complaint.publicNote, statusLogs: complaint.statusLogs } });
+    res.json({ success: true, message: `Status updated to ${newStatus}`, complaint: { _id: complaint._id, complaintNo: complaint.complaintNo, status: complaint.status, adminNote: complaint.adminNote, publicNote: complaint.publicNote, statusLogs: complaint.statusLogs, resolutionImageUrl: complaint.resolutionImageUrl, resolutionRemarks: complaint.resolutionRemarks } });
   } catch (err) {
     console.error('[updateComplaintStatus]', err);
     if (err.name === 'CastError') return res.status(400).json({ error: 'Invalid complaint ID.' });

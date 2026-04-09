@@ -66,7 +66,10 @@ export async function fetchComplaintById(id) {
 }
 
 export async function updateComplaintStatus(id, payload) {
-  const res = await api.patch(`/admin/complaints/${id}/status`, payload);
+  const isFormData = payload instanceof FormData;
+  const res = await api.patch(`/admin/complaints/${id}/status`, payload, {
+    headers: isFormData ? { 'Content-Type': 'multipart/form-data' } : {},
+  });
   return res.data;
 }
 

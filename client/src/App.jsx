@@ -51,6 +51,7 @@ function AppRoutes() {
         <Route path="/admin/complaints/:id" element={<ProtectedRoute><ComplaintDetail /></ProtectedRoute>} />
         <Route path="/admin/map"            element={<ProtectedRoute><MapView /></ProtectedRoute>} />
         <Route path="/admin"                element={<Navigate to="/admin/dashboard" replace />} />
+
         <Route path="*"                     element={<NotFound />} />
       </Routes>
     </Suspense>

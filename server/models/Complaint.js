@@ -46,6 +46,11 @@ const ComplaintSchema = new mongoose.Schema({
   adminNote     : { type: String, default: null, trim: true },
   publicNote    : { type: String, default: null, trim: true },
 
+  resolutionImageUrl : { type: String, default: null, trim: true },
+  resolutionPublicId : { type: String, default: null, trim: true },
+  resolutionRemarks  : { type: String, default: null, trim: true },
+
+
   reporterName  : { type: String, default: null, trim: true },
   reporterEmail : { type: String, default: null, trim: true },
   reporterPhone : { type: String, default: null, trim: true },

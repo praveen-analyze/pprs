@@ -29,4 +29,4 @@ const uploadImages = (req, res, next) => {
   });
 };
 
-module.exports = { uploadImages };
+module.exports = { uploadImages, upload };

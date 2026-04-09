@@ -4,7 +4,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: { 50:'#EFF6FF',100:'#DBEAFE',200:'#BFDBFE',300:'#93C5FD',400:'#60A5FA',500:'#3B82F6',600:'#185FA5',700:'#1D4ED8',800:'#1E40AF',900:'#1E3A8A' },
+        primary: { 50: '#eef2ff', 100: '#e0e7ff', 200: '#c7d2fe', 300: '#a5b4fc', 400: '#818cf8', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca', 800: '#3730a3', 900: '#312e81' },
+        secondary: { 50: '#f8fafc', 100: '#f1f5f9', 800: '#1e293b', 900: '#0f172a' },
       },
       animation: {
         'fade-in' : 'fadeIn 0.3s ease-in-out',
@@ -15,8 +16,9 @@ export default {
         slideUp : { '0%': { transform: 'translateY(16px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
       },
       boxShadow: {
-        card : '0 1px 3px 0 rgba(0,0,0,0.08)',
-        panel: '0 4px 6px -1px rgba(0,0,0,0.07)',
+        card : '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
+        panel: '0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04)',
+        glass: '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
       },
     },
   },
