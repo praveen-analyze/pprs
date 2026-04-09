@@ -2,8 +2,9 @@
   "name": "municipal-board-system",
   "version": "1.0.0",
   "scripts": {
-    "start": "cd server && npm start",
-    "install-server": "cd server && npm install"
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "install-server": "npm install"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",

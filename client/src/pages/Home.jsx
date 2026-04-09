@@ -164,7 +164,7 @@ export default function Home() {
           <h2 className="text-3xl font-bold mb-4">Spotted a problem? Report it now.</h2>
           <p className="text-blue-100 mb-8 max-w-lg mx-auto">Your report goes directly to the municipal authority. No registration required.</p>
           <Link to="/report" className="inline-flex items-center gap-2 bg-white text-primary-600 font-bold px-8 py-4 rounded-xl hover:bg-blue-50 active:scale-95 transition-all text-lg">
-            Get started — it's free
+            Get started
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
