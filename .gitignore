@@ -21,3 +21,6 @@ server/server_log.txt
 # Large files / OS specific
 C:/Users/USER/
 Thumbs.db
+
+./client/.env
+./server/.env

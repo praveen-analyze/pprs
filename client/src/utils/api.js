@@ -6,10 +6,14 @@ const BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? window.
 const api = axios.create({
   baseURL: `${BASE_URL}/api`,
   timeout: 30000,
-  headers: { 'Content-Type': 'application/json' },
 });
 
 api.interceptors.request.use((config) => {
+  if (config.data instanceof FormData && config.headers) {
+    // Let the browser set multipart boundary automatically for FormData.
+    delete config.headers['Content-Type'];
+  }
+
   const token = localStorage.getItem('municipal_admin_token');
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
@@ -39,9 +43,7 @@ export async function fetchCategories() {
 }
 
 export async function submitComplaint(formData) {
-  const res = await api.post('/complaints', formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-  });
+  const res = await api.post('/complaints', formData);
   return res.data;
 }
 

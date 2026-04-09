@@ -29,4 +29,15 @@ const uploadImages = (req, res, next) => {
   });
 };
 
-module.exports = { uploadImages, upload };
+const uploadChatPhoto = (req, res, next) => {
+  upload.single('photo')(req, res, (err) => {
+    if (err instanceof multer.MulterError) {
+      if (err.code === 'LIMIT_FILE_SIZE') return res.status(400).json({ error: 'Image must be under 5MB.' });
+      return res.status(400).json({ error: err.message });
+    }
+    if (err) return res.status(400).json({ error: err.message });
+    next();
+  });
+};
+
+module.exports = { uploadImages, uploadChatPhoto };
