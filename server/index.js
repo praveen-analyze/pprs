@@ -68,8 +68,17 @@ async function startServer() {
     console.warn('⚠️  Starting server without database connection. Some features may not work.');
   }
 
-  app.listen(PORT, () => {
+  const server = app.listen(PORT, () => {
     console.log(`🚀 Server running on http://localhost:${PORT}`);
+  });
+
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.error(`❌ Port ${PORT} is already in use. Please stop the existing process or run with a different PORT.`);
+      return;
+    }
+
+    console.error('❌ Server failed to start:', err.message);
   });
 }
 

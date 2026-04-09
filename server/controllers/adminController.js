@@ -1,4 +1,5 @@
 const jwt       = require('jsonwebtoken');
+const mongoose  = require('mongoose');
 const Admin     = require('../models/Admin');
 const Complaint = require('../models/Complaint');
 const { sendStatusUpdateEmail } = require('../utils/mailer');
@@ -12,6 +13,10 @@ function generateToken(admin) {
 
 async function login(req, res) {
   try {
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(503).json({ error: 'Database is unavailable. Please try again shortly.' });
+    }
+
     const { email, password } = req.body;
     if (!email || !password) return res.status(400).json({ error: 'Email and password are required.' });
     const admin = await Admin.findOne({ email: email.trim().toLowerCase() });
