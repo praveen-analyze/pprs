@@ -514,9 +514,19 @@ const handleChat = async (req, res) => {
         }
 
         // 4. AI response with strict persona and response constraints
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        let validHistory = history || [];
+        if (validHistory.length > 0 && validHistory[0].role !== 'user') {
+            const firstUserIndex = validHistory.findIndex(h => h.role === 'user');
+            if (firstUserIndex >= 0) {
+                validHistory = validHistory.slice(firstUserIndex);
+            } else {
+                validHistory = [];
+            }
+        }
+
+        const model = genAI.getGenerativeModel({ model: "gemini-1.0-pro" });
         const chat = model.startChat({
-            history: history || [],
+            history: validHistory,
             generationConfig: { maxOutputTokens: 140 }
         });
 

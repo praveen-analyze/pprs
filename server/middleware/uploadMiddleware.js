@@ -40,4 +40,4 @@ const uploadChatPhoto = (req, res, next) => {
   });
 };
 
-module.exports = { uploadImages, uploadChatPhoto };
+module.exports = { upload, uploadImages, uploadChatPhoto };

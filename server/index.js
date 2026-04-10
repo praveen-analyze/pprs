@@ -62,23 +62,23 @@ app.use((err, _req, res, _next) => {
 async function startServer() {
   try {
     await mongoose.connect(process.env.MONGODB_URI);
-    console.log('✅ MongoDB connected');
+    console.log(' MongoDB connected');
   } catch (err) {
-    console.error('❌ MongoDB connection failed:', err.message);
-    console.warn('⚠️  Starting server without database connection. Some features may not work.');
+    console.error(' MongoDB connection failed:', err.message);
+    console.warn(' Starting server without database connection. Some features may not work.');
   }
 
   const server = app.listen(PORT, () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
+    console.log(` Server running on http://localhost:${PORT}`);
   });
 
   server.on('error', (err) => {
     if (err.code === 'EADDRINUSE') {
-      console.error(`❌ Port ${PORT} is already in use. Please stop the existing process or run with a different PORT.`);
+      console.error(` Port ${PORT} is already in use. Please stop the existing process or run with a different PORT.`);
       return;
     }
 
-    console.error('❌ Server failed to start:', err.message);
+    console.error(' Server failed to start:', err.message);
   });
 }
 

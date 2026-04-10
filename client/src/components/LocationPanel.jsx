@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useGeolocation } from '@/hooks/useGeolocation';
-import LocationMap from './LocationMap'; // ✅ NEW
+import LocationMap from './LocationMap'; 
 
 export default function LocationPanel({ isEnabled, onLocationCapture }) {
   const { location, address, isLoading, isGranted, error, getLocation, resetLocation } = useGeolocation();
@@ -56,7 +56,7 @@ export default function LocationPanel({ isEnabled, onLocationCapture }) {
           </div>
         )}
 
-        {/* ✅ FREE MAP */}
+        {/* MAP */}
         {isGranted && location && (
           <LocationMap
             latitude={location.latitude}

@@ -91,10 +91,10 @@ const Chatbot = () => {
     };
 
     return (
-        <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end">
+        <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end ">
             {/* Chat Window */}
             {isOpen && (
-                <div className="mb-4 w-[350px] sm:w-[410px] h-[540px] bg-white/95 backdrop-blur-sm rounded-3xl shadow-[0_24px_60px_rgba(15,23,42,0.28)] border border-slate-200/80 flex flex-col overflow-hidden animate-slide-up">
+                <div className="mb-4 w-[250px] sm:w-[410px] h-[435px] bg-white/95 backdrop-blur-sm rounded-3xl shadow-[0_24px_60px_rgba(15,23,42,0.28)] border border-slate-200/80 flex flex-col overflow-hidden animate-slide-up">
                     {/* Header */}
                     <div className="relative bg-gradient-to-r from-[#1455a0] via-primary-600 to-[#2f79c7] p-4 flex items-center justify-between text-white">
                         <div className="pointer-events-none absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.8) 1px, transparent 0)', backgroundSize: '10px 10px' }}></div>
